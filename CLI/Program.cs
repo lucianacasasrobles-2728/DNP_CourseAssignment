@@ -1,5 +1,5 @@
 ﻿using CLI.UI;
-using InMemoryRepositories;
+using FileRepositories;
 using RepositoryContracts;
 
 namespace CLI;
@@ -10,9 +10,9 @@ class Program
     {
         Console.WriteLine("Starting CLI Application...");
 
-        IUserRepository userRepository = new UserInMemoryRepository();
-        ICommentRepository commentRepository = new CommentInMemoryRepository();
-        IPostRepository postRepository = new PostInMemoryRepository();
+        IUserRepository userRepository = new UserFileRepository();
+        ICommentRepository commentRepository = new CommentFileRepository();
+        IPostRepository postRepository = new PostFileRepository();
 
         CliApp app = new CliApp(
             userRepository,
