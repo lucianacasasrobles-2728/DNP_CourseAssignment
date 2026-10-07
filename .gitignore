@@ -1,0 +1,19 @@
+# JetBrains Rider
+.idea/
+*.sln.iml
+*.DotSettings.user
+
+# .NET build folders
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+
+# Logs
+*.log
+
+# Operating system files
+.DS_Store
+Thumbs.db

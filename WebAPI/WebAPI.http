@@ -1,0 +1,205 @@
+@WebAPI_HostAddress = http://localhost:5164
+
+
+### =========================
+### USERS
+### =========================
+
+### Get all users
+
+GET {{WebAPI_HostAddress}}/api/users
+Accept: application/json
+
+
+###
+
+### Create a user
+
+POST {{WebAPI_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  "userName": "Luciana",
+  "password": "1234"
+}
+
+
+###
+
+### Get user by id
+
+GET {{WebAPI_HostAddress}}/api/users/4
+Accept: application/json
+
+
+###
+
+### Update user
+
+PUT {{WebAPI_HostAddress}}/api/users/4
+Content-Type: application/json
+
+{
+  "id": 4,
+  "userName": "LucianaUpdated",
+  "password": "5678"
+}
+
+
+###
+
+### Delete user
+
+DELETE {{WebAPI_HostAddress}}/api/users/4
+
+
+###
+
+### Get users filtered by username
+
+GET {{WebAPI_HostAddress}}/api/users?userName=Luc
+Accept: application/json
+
+
+
+### =========================
+### POSTS
+### =========================
+
+### Get all posts
+
+GET {{WebAPI_HostAddress}}/api/posts
+Accept: application/json
+
+
+###
+
+### Create a post
+
+POST {{WebAPI_HostAddress}}/api/posts
+Content-Type: application/json
+
+{
+  "id": 0,
+  "title": "My first post",
+  "body": "This is my first post",
+  "userId": 4
+}
+
+
+###
+
+### Get post by id
+
+GET {{WebAPI_HostAddress}}/api/posts/1
+Accept: application/json
+
+
+###
+
+### Update post
+
+PUT {{WebAPI_HostAddress}}/api/posts/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "My updated post",
+  "body": "This post has been updated",
+  "userId": 4
+}
+
+
+###
+
+### Delete post
+
+DELETE {{WebAPI_HostAddress}}/api/posts/1
+
+
+###
+
+### Get posts filtered by title
+
+GET {{WebAPI_HostAddress}}/api/posts?title=first
+Accept: application/json
+
+
+###
+
+### Get posts filtered by user
+
+GET {{WebAPI_HostAddress}}/api/posts?userId=4
+Accept: application/json
+
+
+
+### =========================
+### COMMENTS
+### =========================
+
+### Get all comments
+
+GET {{WebAPI_HostAddress}}/api/comments
+Accept: application/json
+
+
+###
+
+### Create a comment
+
+POST {{WebAPI_HostAddress}}/api/comments
+Content-Type: application/json
+
+{
+  "id": 0,
+  "body": "This is my first comment",
+  "userId": 4,
+  "postId": 1
+}
+
+
+###
+
+### Get comment by id
+
+GET {{WebAPI_HostAddress}}/api/comments/1
+Accept: application/json
+
+
+###
+
+### Update comment
+
+PUT {{WebAPI_HostAddress}}/api/comments/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "body": "This comment has been updated",
+  "userId": 4,
+  "postId": 1
+}
+
+
+###
+
+### Delete comment
+
+DELETE {{WebAPI_HostAddress}}/api/comments/1
+
+
+###
+
+### Get comments filtered by user
+
+GET {{WebAPI_HostAddress}}/api/comments?userId=4
+Accept: application/json
+
+
+###
+
+### Get comments filtered by post
+
+GET {{WebAPI_HostAddress}}/api/comments?postId=1
+Accept: application/json
