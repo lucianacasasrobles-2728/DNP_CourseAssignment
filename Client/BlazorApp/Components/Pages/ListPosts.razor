@@ -1,0 +1,53 @@
+@page "/posts"
+@rendermode InteractiveServer
+@using ApiContracts
+@using BlazorApp.Services
+@inject IPostService PostService
+
+<h3>Posts</h3>
+
+@if (posts == null)
+{
+    <p>Loading posts...</p>
+}
+else if (posts.Count == 0)
+{
+    <p>No posts found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Body</th>
+            <th>User ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (PostDto post in posts)
+        {
+            <tr>
+                <td>@post.Id</td>
+                <td>
+                    <a href="@($"/posts/{post.Id}")">
+                        @post.Title
+                    </a>
+                </td>
+                <td>@post.Body</td>
+                <td>@post.UserId</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<PostDto>? posts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        posts = await PostService.GetPostsAsync();
+    }
+}

@@ -1,0 +1,48 @@
+@page "/create-comment"
+@rendermode InteractiveServer
+@using ApiContracts
+@using BlazorApp.Services
+@inject ICommentService CommentService
+
+<h3>Create Comment</h3>
+
+<div>
+    <label>Post ID:</label>
+    <input type="number" @bind="postId" />
+</div>
+
+<div>
+    <label>Comment:</label>
+    <textarea @bind="body"></textarea>
+</div>
+
+<button @onclick="CreateCommentAsync">Create Comment</button>
+
+<p>@message</p>
+
+@code {
+    private int postId = 1;
+    private string body = "";
+    private string message = "";
+
+    private async Task CreateCommentAsync()
+    {
+        try
+        {
+            CreateCommentDto request = new CreateCommentDto
+            {
+                Body = body,
+                UserId = 1,
+                PostId = postId
+            };
+
+            await CommentService.CreateCommentAsync(request);
+
+            message = "Comment created successfully!";
+        }
+        catch (Exception)
+        {
+            message = "Error creating comment.";
+        }
+    }
+}

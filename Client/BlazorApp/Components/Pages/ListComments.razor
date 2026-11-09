@@ -1,0 +1,49 @@
+@page "/comments"
+@rendermode InteractiveServer
+@using ApiContracts
+@using BlazorApp.Services
+@inject ICommentService CommentService
+
+<h3>Comments</h3>
+
+@if (comments == null)
+{
+    <p>Loading comments...</p>
+}
+else if (comments.Count == 0)
+{
+    <p>No comments found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Body</th>
+            <th>User ID</th>
+            <th>Post ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (CommentDto comment in comments)
+        {
+            <tr>
+                <td>@comment.Id</td>
+                <td>@comment.Body</td>
+                <td>@comment.UserId</td>
+                <td>@comment.PostId</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<CommentDto>? comments;
+
+    protected override async Task OnInitializedAsync()
+    {
+        comments = await CommentService.GetCommentsAsync();
+    }
+}
