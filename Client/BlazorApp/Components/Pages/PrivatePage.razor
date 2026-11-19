@@ -1,0 +1,19 @@
+@page "/private"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Components.Authorization
+
+<PageTitle>Private Page</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <h3>Private Page</h3>
+        <p>Welcome, @context.User.Identity?.Name!</p>
+        <p>Only logged-in users can see this content.</p>
+    </Authorized>
+
+    <NotAuthorized>
+        <h3>Access denied</h3>
+        <p>You must log in to see this page.</p>
+        <a href="/login">Go to login</a>
+    </NotAuthorized>
+</AuthorizeView>
