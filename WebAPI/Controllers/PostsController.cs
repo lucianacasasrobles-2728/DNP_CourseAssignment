@@ -1,4 +1,7 @@
+
+using System.Security.Claims;
 using Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
 
@@ -22,17 +25,12 @@ public class PostsController : ControllerBase
         var post = await postRepository.GetSingleAsync(id);
 
         if (post == null)
-        {
             return NotFound();
-        }
 
         return Ok(post);
     }
 
     // GET api/posts
-    // GET api/posts?userId=4
-    // GET api/posts?title=first
-    // GET api/posts?userId=4&title=first
     [HttpGet]
     public ActionResult GetMany(
         [FromQuery] int? userId,
@@ -41,42 +39,48 @@ public class PostsController : ControllerBase
         var posts = postRepository.GetMany();
 
         if (userId != null)
-        {
-            posts = posts.Where(post => post.UserId == userId);
-        }
+            posts = posts.Where(p => p.UserId == userId);
 
         if (!string.IsNullOrWhiteSpace(title))
-        {
-            posts = posts.Where(post =>
-                post.Title.Contains(
-                    title,
-                    StringComparison.OrdinalIgnoreCase));
-        }
+            posts = posts.Where(p =>
+                p.Title.ToLower().Contains(title.ToLower()));
 
         return Ok(posts.ToList());
     }
 
     // POST api/posts
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult> CreateAsync(Post post)
     {
+        int userId = int.Parse(
+            User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+        post.UserId = userId;
+
         var createdPost = await postRepository.AddAsync(post);
 
         return Ok(createdPost);
     }
 
     // PUT api/posts/1
+    [Authorize]
     [HttpPut("{id:int}")]
     public async Task<ActionResult> UpdateAsync(int id, Post post)
     {
         var existingPost = await postRepository.GetSingleAsync(id);
 
         if (existingPost == null)
-        {
             return NotFound();
-        }
+
+        int userId = int.Parse(
+            User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+        if (existingPost.UserId != userId)
+            return Forbid();
 
         post.Id = id;
+        post.UserId = userId;
 
         await postRepository.UpdateAsync(post);
 
@@ -84,15 +88,20 @@ public class PostsController : ControllerBase
     }
 
     // DELETE api/posts/1
+    [Authorize]
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeleteAsync(int id)
     {
         var existingPost = await postRepository.GetSingleAsync(id);
 
         if (existingPost == null)
-        {
             return NotFound();
-        }
+
+        int userId = int.Parse(
+            User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+        if (existingPost.UserId != userId)
+            return Forbid();
 
         await postRepository.DeleteAsync(id);
 
