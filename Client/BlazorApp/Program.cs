@@ -5,15 +5,18 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Authentication services
+// Authentication
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
+// Shared JWT token
+builder.Services.AddScoped<JwtTokenProvider>();
+
+// Login service
 builder.Services.AddHttpClient<SimpleAuthProvider>(client =>
 {
     client.BaseAddress = new Uri("http://localhost:5164/");
@@ -22,7 +25,7 @@ builder.Services.AddHttpClient<SimpleAuthProvider>(client =>
 builder.Services.AddScoped<AuthenticationStateProvider>(
     sp => sp.GetRequiredService<SimpleAuthProvider>());
 
-// Register HTTP services
+// HTTP services
 builder.Services.AddHttpClient<IUserService, HttpUserService>(client =>
 {
     client.BaseAddress = new Uri("http://localhost:5164/");
@@ -40,7 +43,6 @@ builder.Services.AddHttpClient<ICommentService, HttpCommentService>(client =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
@@ -52,7 +54,6 @@ app.UseStatusCodePagesWithReExecute(
     createScopeForStatusCodePages: true);
 
 app.UseHttpsRedirection();
-
 app.UseAntiforgery();
 
 app.MapStaticAssets();

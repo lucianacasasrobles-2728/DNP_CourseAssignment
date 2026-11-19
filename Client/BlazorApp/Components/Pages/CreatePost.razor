@@ -32,17 +32,16 @@
             CreatePostDto request = new CreatePostDto
             {
                 Title = title,
-                Body = body,
-                UserId = 1
+                Body = body
             };
 
             await PostService.CreatePostAsync(request);
 
             message = "Post created successfully!";
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            message = "Error creating post.";
+            message = $"Error creating post: {ex.Message}";
         }
     }
 }
